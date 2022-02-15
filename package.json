@@ -1,0 +1,10 @@
+{
+  "license": "MIT",
+  "author": {
+    "email": "psk876@naver.com",
+    "name": "SinGyu Park"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "4.5.0"
+  }
+}
