@@ -7,10 +7,17 @@ contract CrowdFundingFactory {
 
     event CreateFunding(uint id, string title, address owner);
 
+    modifier fundingBeginMustBePassedNow(uint _fundingBegin) {
+        require(block.timestamp <= _fundingBegin);
+        _;
+    }
+
     struct Funding {
         string title;
         string subTitle;
         string comments;
+        uint currentAmount;
+        uint availableMinAmount;
         uint goalAmount;
         uint fundingBegin;
         uint fundingEnd;
@@ -27,10 +34,11 @@ contract CrowdFundingFactory {
         string memory _subTitle,
         string memory _comments,
         uint _goalAmount,
+        uint _availableMinAmount,
         uint _fundingBegin,
         uint _fundingEnd) external returns(uint) {
         fundings.push(
-            Funding(_title, _subTitle, _comments, _goalAmount, _fundingBegin, _fundingEnd, msg.sender)
+            Funding(_title, _subTitle, _comments, 0, _availableMinAmount, _goalAmount, _fundingBegin, _fundingEnd, msg.sender)
         );
 
         uint id = fundings.length.sub(1);
@@ -47,5 +55,9 @@ contract CrowdFundingFactory {
             myFundings[i] = fundings[fundingIds[i]];
         }
         return myFundings;
+    }
+
+    function getFundings() external view returns(Funding [] memory) {
+        return fundings;
     }
 }
