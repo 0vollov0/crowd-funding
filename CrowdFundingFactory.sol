@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.7;
+pragma solidity 0.8.9;
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract CrowdFundingFactory {
@@ -7,6 +7,7 @@ contract CrowdFundingFactory {
 
     event CreateFunding(uint id, string title, address owner);
 
+    // It will check whether funding beginning time is past now
     modifier fundingBeginMustBePassedNow(uint _fundingBegin) {
         require(block.timestamp <= _fundingBegin);
         _;
