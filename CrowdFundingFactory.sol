@@ -22,12 +22,12 @@ contract CrowdFundingFactory {
         uint goalAmount;
         uint fundingBegin;
         uint fundingEnd;
-        address seller;
+        address fundraiser;
     }
 
     Funding[] public fundings;
 
-    mapping (uint=>address) public fundingToSeller;
+    mapping (uint=>address) public fundingToFundraiser;
     mapping (address=>uint[]) public addressToFundingIds;
 
     function createFunding(
@@ -43,7 +43,7 @@ contract CrowdFundingFactory {
         );
 
         uint id = fundings.length.sub(1);
-        fundingToSeller[id] = msg.sender;
+        fundingToFundraiser[id] = msg.sender;
         addressToFundingIds[msg.sender].push(id);
         emit CreateFunding(id, _title, msg.sender);
         return id;
