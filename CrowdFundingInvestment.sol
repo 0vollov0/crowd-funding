@@ -9,6 +9,17 @@ contract CrowdFundingInvestment is CrowdFundingFactory {
 
     event Invest(address _address, uint _fundingId, uint amount, uint date);
 
+    modifier availableAmount(uint _fundingId) {
+        require(fundings[_fundingId].availableMinAmount <= msg.value);
+        _;
+    }
+
+    modifier availableFundingTime(uint _fundingId) {
+        uint time = block.timestamp;
+        require(fundings[_fundingId].fundingBegin <= time && time < fundings[_fundingId].fundingEnd);
+        _;
+    }
+
     struct AccountPaper {
         address funder;
         uint fundingId;
@@ -21,13 +32,15 @@ contract CrowdFundingInvestment is CrowdFundingFactory {
     mapping (address=>mapping(uint=>uint[])) public addressToFundingIdToAcoountPapersIds;
     // mapping (address=>mapping(uint=>AccountPaper[])) public addressToFundingIdToAccountPapers;
 
-    function invest(uint _id, uint _amount) external {
+    function invest(uint _fundingId) external payable availableFundingTime(_fundingId) availableAmount(_fundingId){
         uint date = block.timestamp;
-        AccountPaper memory accountPaper = AccountPaper(msg.sender, _id, _amount, date);
-        fundingToAccountPapers[_id].push(accountPaper);
-        addressToInvestedFundingIds[msg.sender].push(_id);
-        addressToFundingIdToAcoountPapersIds[msg.sender][_id].push(fundingToAccountPapers[_id].length.sub(1));
-        emit Invest(msg.sender, _id, _amount, date);
+        uint investAmount = msg.value;
+        fundings[_fundingId].currentAmount.add(investAmount);
+        AccountPaper memory accountPaper = AccountPaper(msg.sender, _fundingId, investAmount, date);
+        fundingToAccountPapers[_fundingId].push(accountPaper);
+        addressToInvestedFundingIds[msg.sender].push(_fundingId);
+        addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].push(fundingToAccountPapers[_fundingId].length.sub(1));
+        emit Invest(msg.sender, _fundingId, investAmount, date);
     }
 
     function getMyFundingAccountPapers(uint _id) external view returns(AccountPaper[] memory){
