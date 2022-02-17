@@ -2,3 +2,4 @@ node_modules/
 artifacts/
 pacakge-lock.json
 *.bat
+debug-inputs.json
