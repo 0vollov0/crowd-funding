@@ -3,7 +3,7 @@ pragma solidity 0.8.9;
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./CrowdFundingFactory.sol";
 
-contract CrowdFundingInvestment is CrowdFundingFactory {
+contract FunderHandler is CrowdFundingFactory {
     
     using SafeMath for uint256;
 
