@@ -2,21 +2,22 @@
 pragma solidity 0.8.9;
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./CrowdFundingFactory.sol";
+import "./FundingCoinManager.sol";
 
-contract FunderHandler is CrowdFundingFactory {
+contract FunderHandler is CrowdFundingFactory, FundingCoinManager {
     
     using SafeMath for uint256;
 
-    event Invest(address _address, uint _fundingId, uint amount, uint date);
+    event Fund(address _address, uint _fundingId, uint amount, uint date);
+    event Deposited(address indexed payee, uint256 weiAmount);
 
-    modifier availableAmount(uint _fundingId) {
-        require(fundings[_fundingId].availableMinAmount <= msg.value);
+    modifier funded(uint _fundingId) {
+        require(addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length > 0);
         _;
     }
 
-    modifier availableFundingTime(uint _fundingId) {
-        uint time = block.timestamp;
-        require(fundings[_fundingId].fundingBegin <= time && time < fundings[_fundingId].fundingEnd);
+    modifier ownerOfAccountPaper(uint _fundingId, uint _accountPaperId) {
+        require(fundingToAccountPapers[_fundingId][_accountPaperId].funder == msg.sender);
         _;
     }
 
@@ -28,30 +29,57 @@ contract FunderHandler is CrowdFundingFactory {
     }
 
     mapping (uint=>AccountPaper[]) public fundingToAccountPapers;
-    mapping (address=>uint[]) public addressToInvestedFundingIds;
+    mapping (address=>uint[]) public addressToFundedFundingIds;
     mapping (address=>mapping(uint=>uint[])) public addressToFundingIdToAcoountPapersIds;
-    // mapping (address=>mapping(uint=>AccountPaper[])) public addressToFundingIdToAccountPapers;
 
-    function invest(uint _fundingId) external payable availableFundingTime(_fundingId) availableAmount(_fundingId){
+    function fund(uint _fundingId) external payable availableFunding(_fundingId) availableAmount(_fundingId){
         uint date = block.timestamp;
-        uint investAmount = msg.value;
-        fundings[_fundingId].currentAmount.add(investAmount);
-        AccountPaper memory accountPaper = AccountPaper(msg.sender, _fundingId, investAmount, date);
+        uint fundAmount = msg.value;
+        fundings[_fundingId].currentAmount = fundings[_fundingId].currentAmount.add(fundAmount);
+        AccountPaper memory accountPaper = AccountPaper(msg.sender, _fundingId, fundAmount, date);
         fundingToAccountPapers[_fundingId].push(accountPaper);
-        addressToInvestedFundingIds[msg.sender].push(_fundingId);
+        addressToFundedFundingIds[msg.sender].push(_fundingId);
         addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].push(fundingToAccountPapers[_fundingId].length.sub(1));
-        emit Invest(msg.sender, _fundingId, investAmount, date);
+        emit Fund(msg.sender, _fundingId, fundAmount, date);
     }
 
-    function getMyFundingAccountPapers(uint _id) external view returns(AccountPaper[] memory){
-        uint[] memory accountPaperIds = addressToFundingIdToAcoountPapersIds[msg.sender][_id];
-        AccountPaper[] memory FundingAccountPapers = fundingToAccountPapers[_id];
+    function withdrawFromFuding(address payable _address,uint _fundingId) external payable availableFunding(_fundingId) funded(_fundingId) {
+        require(addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length > 0, "You don't have any account paper about the funding.");
+        uint fundedAmount;
+
+        for (uint256 i = 0; i < addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length; i++) {
+           fundedAmount = fundedAmount.add(_popAcoountPaperAmount(_fundingId));
+        }
+        fundings[_fundingId].currentAmount = fundings[_fundingId].currentAmount.sub(fundedAmount);
+        _address.transfer(fundedAmount);
+    }
+
+    function getMyFundingAccountPapers(uint _fundingId) external view returns(AccountPaper[] memory){
+        uint[] memory accountPaperIds = addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId];
+        AccountPaper[] memory FundingAccountPapers = fundingToAccountPapers[_fundingId];
         AccountPaper[] memory myAccountPapers = new AccountPaper[](accountPaperIds.length);
 
-        for(uint i=0; i < accountPaperIds.length; i.add(1)) {
+        for(uint i=0; i < accountPaperIds.length; i++) {
             myAccountPapers[i] = FundingAccountPapers[accountPaperIds[i]];
         }
 
         return myAccountPapers;
+    }
+
+    function _popAcoountPaperAmount(uint _fundingId) private returns(uint) {
+        require(addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length > 0);
+        uint accountPaperId = addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId][0];
+        uint amount = fundingToAccountPapers[_fundingId][accountPaperId].amount;
+        _removeMyAccountPaperIds(_fundingId, 0);
+        return amount;
+    }
+
+    function _removeMyAccountPaperIds(uint _fundingId, uint _index) private {
+        require(_index < addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length, "index out of bound");
+
+        for (uint i = _index; i < addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length - 1; i++) {
+            addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId][i] = addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId][i + 1];
+        }
+        addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].pop();
     }
 }
