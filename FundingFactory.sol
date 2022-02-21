@@ -36,7 +36,7 @@ contract FundingFactory {
         fundings.push(
             Funding(_title, _subTitle, _comments, 0, _availableMinAmount * coinUnit, _goalAmount, _beginTime, _endTime, msg.sender)
         );
-        // require(block.timestamp < _beginTime, "The beginTime must be after block timestamp.");
+        require(block.timestamp < _beginTime, "The beginTime must be after block timestamp.");
         require(_beginTime < _endTime, "The beginTime must be before the endTime.");
         uint id = fundings.length.sub(1);
         fundingToFundraiser[id] = msg.sender;
