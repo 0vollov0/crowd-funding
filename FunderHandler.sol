@@ -1,15 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.9;
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "./CrowdFundingFactory.sol";
-import "./FundingCoinManager.sol";
+import "./FundingHandler.sol";
 
-contract FunderHandler is CrowdFundingFactory, FundingCoinManager {
+contract FunderHandler is FundingHandler {
     
     using SafeMath for uint256;
 
     event Fund(address _address, uint _fundingId, uint amount, uint date);
-    event Deposited(address indexed payee, uint256 weiAmount);
+    event WithdrawAsFunder(address _address, uint amount);
 
     modifier funded(uint _fundingId) {
         require(addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length > 0);
@@ -32,7 +31,7 @@ contract FunderHandler is CrowdFundingFactory, FundingCoinManager {
     mapping (address=>uint[]) public addressToFundedFundingIds;
     mapping (address=>mapping(uint=>uint[])) public addressToFundingIdToAcoountPapersIds;
 
-    function fund(uint _fundingId) external payable availableFunding(_fundingId) availableAmount(_fundingId){
+    function fund(uint _fundingId) external payable availableFund(_fundingId) availableAmount(_fundingId){
         uint date = block.timestamp;
         uint fundAmount = msg.value;
         fundings[_fundingId].currentAmount = fundings[_fundingId].currentAmount.add(fundAmount);
@@ -43,7 +42,7 @@ contract FunderHandler is CrowdFundingFactory, FundingCoinManager {
         emit Fund(msg.sender, _fundingId, fundAmount, date);
     }
 
-    function withdrawFromFuding(address payable _address,uint _fundingId) external payable availableFunding(_fundingId) funded(_fundingId) {
+    function withdrawAsFunder(address payable _address,uint _fundingId) external funded(_fundingId) fundingNotEndOrFailed(_fundingId) {
         require(addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length > 0, "You don't have any account paper about the funding.");
         uint fundedAmount;
 
@@ -52,6 +51,7 @@ contract FunderHandler is CrowdFundingFactory, FundingCoinManager {
         }
         fundings[_fundingId].currentAmount = fundings[_fundingId].currentAmount.sub(fundedAmount);
         _address.transfer(fundedAmount);
+        emit WithdrawAsFunder(_address, fundedAmount);
     }
 
     function getMyFundingAccountPapers(uint _fundingId) external view returns(AccountPaper[] memory){
