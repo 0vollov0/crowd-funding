@@ -1,5 +1,20 @@
- Contracts Description Table
+# crowd-funding
 
+This is a program that is crowdfunding which is able to operate in Ethereum network. There are two type  of users in this contract, The first one is a `Funder` who fund for funding success. The second one is a `Fundraiser` who create a funding for his project.
+
+When `Fundraiser` create a funding, he needs to set up title, subtitle, content, goalAmount, minAvailableAmount, beginTime, endTime about his funding.
+
+In order to withdraw Ether from a funding as `Fundraiser`, You need a successful funding that stored in this smart contract.
+
+In order to withdraw Ether from a funding as `Funder`, A funding state must be failed or progress.
+
+> getBalance method that is located in crowdFunding would show you balance of this contract.
+
+## Contracts UML
+
+![UML](/uml/solidity_uml.png)
+
+## Contracts Description Table
 
 |  Contract  |         Type        |       Bases      |                  |                 |
 |:----------:|:-------------------:|:----------------:|:----------------:|:---------------:|
@@ -24,7 +39,7 @@
 | L  | _removeMyAccountPaperIds | Private 🔐 | 🛑  | |
 
 
- Legend
+### Legend
 
 |  Symbol  |  Meaning  |
 |:--------:|-----------|
