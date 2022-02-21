@@ -11,7 +11,7 @@ contract FundingFactory {
     struct Funding {
         string title;
         string subTitle;
-        string comments;
+        string content;
         uint currentAmount;
         uint availableMinAmount;
         uint goalAmount;
@@ -28,13 +28,13 @@ contract FundingFactory {
     function createFunding(
         string memory _title,
         string memory _subTitle,
-        string memory _comments,
+        string memory _content,
         uint _goalAmount,
         uint _availableMinAmount,
         uint _beginTime,
         uint _endTime) external returns(uint) {
         fundings.push(
-            Funding(_title, _subTitle, _comments, 0, _availableMinAmount * coinUnit, _goalAmount, _beginTime, _endTime, msg.sender)
+            Funding(_title, _subTitle, _content, 0, _availableMinAmount * coinUnit, _goalAmount, _beginTime, _endTime, msg.sender)
         );
         require(block.timestamp < _beginTime, "The beginTime must be after block timestamp.");
         require(_beginTime < _endTime, "The beginTime must be before the endTime.");
