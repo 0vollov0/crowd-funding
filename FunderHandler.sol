@@ -31,7 +31,7 @@ contract FunderHandler is FundingHandler {
     mapping (address=>uint[]) public addressToFundedFundingIds;
     mapping (address=>mapping(uint=>uint[])) public addressToFundingIdToAcoountPapersIds;
 
-    function fund(uint _fundingId) external payable availableFund(_fundingId) availableAmount(_fundingId){
+    function fund(uint _fundingId) external payable availableFund(_fundingId) { 
         uint date = block.timestamp;
         uint fundAmount = msg.value;
         fundings[_fundingId].currentAmount = fundings[_fundingId].currentAmount.add(fundAmount);

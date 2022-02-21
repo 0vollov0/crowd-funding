@@ -21,16 +21,12 @@ contract FundingHandler is FundingFactory, FundingCoinManager {
         uint time = block.timestamp;
         require(fundings[_fundingId].beginTime < time,"The funding not open yet.");
         require(time < fundings[_fundingId].endTime,"The funding closed.");
+        require(fundings[_fundingId].availableMinAmount * coinUnit <= msg.value, "You need to use more amount. Check the funding minimun amount.");
         _;
     }
 
     modifier ownerOfFunding(uint _fundingId) {
         require(msg.sender == fundings[_fundingId].fundraiser);
-        _;
-    }
-
-    modifier availableAmount(uint _fundingId) {
-        require(fundings[_fundingId].availableMinAmount * coinUnit <= msg.value, "You need to use more amount. Check the funding minimun amount.");
         _;
     }
 
