@@ -10,7 +10,7 @@ contract FundraiserHandler is FundingHandler {
         fundings[_fundingId].availableMinAmount = _availableMinAmount;
     }
 
-    function withdrawAsFundraiser(address payable _address, uint _fundingId) external fundingSuccessed(_fundingId) {
+    function withdrawAsFundraiser(address payable _address, uint _fundingId) external fundingSucceeded(_fundingId) {
         bool success = _transfer(_address, fundings[_fundingId].currentAmount);
         if(success) fundings[_fundingId].currentAmount = 0;
     }

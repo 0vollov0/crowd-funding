@@ -42,7 +42,7 @@ contract FundingHandler is FundingFactory, FundingCoinManager {
         _;
     }
 
-    modifier fundingSuccessed(uint _fundingId) {
+    modifier fundingSucceeded(uint _fundingId) {
         require(fundings[_fundingId].fundraiser == msg.sender);
         require(fundings[_fundingId].goalAmount <= fundings[_fundingId].currentAmount);
         require(fundings[_fundingId].endTime <= block.timestamp);
