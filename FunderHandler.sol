@@ -47,7 +47,7 @@ contract FunderHandler is FundingHandler {
         uint fundedAmount;
 
         for (uint256 i = 0; i < addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length; i++) {
-           fundedAmount = fundedAmount.add(_popAcoountPaperAmount(_fundingId));
+           fundedAmount = fundedAmount.add(_popAccountPaperAmount(_fundingId));
         }
         fundings[_fundingId].currentAmount = fundings[_fundingId].currentAmount.sub(fundedAmount);
         _address.transfer(fundedAmount);
@@ -66,7 +66,7 @@ contract FunderHandler is FundingHandler {
         return myAccountPapers;
     }
 
-    function _popAcoountPaperAmount(uint _fundingId) private returns(uint) {
+    function _popAccountPaperAmount(uint _fundingId) private returns(uint) {
         require(addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length > 0);
         uint accountPaperId = addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId][0];
         uint amount = fundingToAccountPapers[_fundingId][accountPaperId].amount;
