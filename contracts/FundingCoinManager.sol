@@ -8,4 +8,9 @@ contract FundingCoinManager {
       require(sent, "Failed to send Ether");
       return sent;
   }
+
+  function withdraw(uint _amount) internal returns(bool) {
+    (bool success, ) = msg.sender.call{value: _amount}("");
+    return success;
+  }
 }
