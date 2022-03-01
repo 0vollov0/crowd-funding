@@ -6,7 +6,7 @@ import "./../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
 contract FundingFactory {
     using SafeMath for uint256;
 
-    event CreateFunding(uint id, string title, address owner);
+    event CreateFunding(uint id, string title, address owner, uint goalAmount, uint beginTime, uint endTime);
 
     uint coinUnit = 1 wei;
 
@@ -43,7 +43,7 @@ contract FundingFactory {
         uint id = fundings.length.sub(1);
         fundingToFundraiser[id] = msg.sender;
         addressToFundingIds[msg.sender].push(id);
-        emit CreateFunding(id, _title, msg.sender);
+        emit CreateFunding(id, _title, msg.sender, _goalAmount, _beginTime, _endTime);
         return id;
     }
 }
