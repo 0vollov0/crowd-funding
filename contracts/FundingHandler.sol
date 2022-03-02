@@ -21,8 +21,8 @@ contract FundingHandler is FundingFactory, FundingCoinManager {
     modifier availableFund(uint _fundingId) {
         uint time = block.timestamp;
         require(fundings[_fundingId].beginTime < time,"The funding not open yet.");
-        require(time < fundings[_fundingId].endTime,"The funding closed.");
-        require(fundings[_fundingId].availableMinAmount * coinUnit <= msg.value, "You need to use more amount. Check the funding minimun amount.");
+        require(time < fundings[_fundingId].endTime,"The funding has closed.");
+        require(fundings[_fundingId].availableMinAmount * coinUnit <= msg.value, "You need to fund more amount. Check the funding minimun amount.");
         _;
     }
 
