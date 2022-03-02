@@ -8,8 +8,8 @@ contract FunderHandler is FundingHandler {
     
     using SafeMath for uint256;
 
-    event Fund(address _address, uint _fundingId, uint amount, uint date);
-    event WithdrawAsFunder(address _address, uint amount);
+    event Fund(address funder, uint fundingId, uint amount, uint date);
+    event WithdrawAsFunder(address funder, uint amount);
 
     modifier funded(uint _fundingId) {
         require(addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length > 0);
@@ -43,16 +43,17 @@ contract FunderHandler is FundingHandler {
         emit Fund(msg.sender, _fundingId, fundAmount, date);
     }
 
-    function withdrawAsFunder(address payable _address,uint _fundingId) external funded(_fundingId) fundingNotEndOrFailed(_fundingId) {
+    function withdrawAsFunder(uint _fundingId) external funded(_fundingId) fundingNotEndOrFailed(_fundingId) {
         require(addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length > 0, "You don't have any account paper about the funding.");
         uint fundedAmount;
-
-        for (uint256 i = 0; i < addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length; i++) {
+        uint accountPaperLength = addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length;
+        for (uint i = 0; i < accountPaperLength; i++) {
            fundedAmount = fundedAmount.add(_popAccountPaperAmount(_fundingId));
         }
         fundings[_fundingId].currentAmount = fundings[_fundingId].currentAmount.sub(fundedAmount);
-        _address.transfer(fundedAmount);
-        emit WithdrawAsFunder(_address, fundedAmount);
+        bool success = withdraw(fundedAmount);
+        require(success,"withdraw method doesn't work well.");
+        emit WithdrawAsFunder(msg.sender, fundedAmount);
     }
 
     function getMyFundingAccountPapers(uint _fundingId) external view returns(AccountPaper[] memory){
