@@ -35,11 +35,12 @@ contract FundingFactory {
         uint _availableMinAmount,
         uint _beginTime,
         uint _endTime) external returns(uint) {
+        require(block.timestamp < _beginTime, "The beginTime must be after block timestamp.");
+        require(_beginTime < _endTime, "The beginTime must be before the endTime.");
+        require(_goalAmount > _availableMinAmount,"The goalAmount must be upper than availableMinAmount.");
         fundings.push(
             Funding(_title, _subTitle, _content, 0, _availableMinAmount * coinUnit, _goalAmount, _beginTime, _endTime, msg.sender)
         );
-        require(block.timestamp < _beginTime, "The beginTime must be after block timestamp.");
-        require(_beginTime < _endTime, "The beginTime must be before the endTime.");
         uint id = fundings.length.sub(1);
         fundingToFundraiser[id] = msg.sender;
         addressToFundingIds[msg.sender].push(id);
