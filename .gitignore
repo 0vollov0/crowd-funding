@@ -5,3 +5,4 @@ pacakge-lock.json
 debug-inputs.json
 bin/
 build/
+.secret
