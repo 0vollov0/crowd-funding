@@ -10,9 +10,13 @@ In order to withdraw Ether from a funding as `Funder`, A funding state must be f
 
 > getBalance method that is located in crowdFunding would show you balance of this contract.
 
+## Publish
+
+* [Ropsten Test Network](https://ropsten.etherscan.io/address/0x70Bf3Fffa538Ec8c7Da3AADf81Fdc0B67093590F)
+
 ## Contracts UML
 
-![UML](/uml/solidity_uml.png)
+![UML](./uml/solidity_uml.png)
 
 ## Contracts Description Table
 
