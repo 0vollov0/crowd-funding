@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.11;
-// import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "./../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./FundingHandler.sol";
 
 contract FunderHandler is FundingHandler {
@@ -43,7 +41,7 @@ contract FunderHandler is FundingHandler {
         emit Fund(msg.sender, _fundingId, fundAmount, date);
     }
 
-    function withdrawAsFunder(uint _fundingId) external funded(_fundingId) fundingNotEndOrFailed(_fundingId) {
+    function withdrawAsFunder(uint _fundingId) external funded(_fundingId) fundingInProgressOrFailed(_fundingId) {
         require(addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length > 0, "You don't have any account paper about the funding.");
         uint fundedAmount;
         uint accountPaperLength = addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length;
