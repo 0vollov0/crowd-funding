@@ -36,10 +36,9 @@ In order to withdraw Ether from a funding as `Funder`, A funding state must be f
 | setAvailableMinAmount | id, amount | This method change funding 'available min amount'. |
 
 ## Test Publish
-|Network|Contract|Txn Hash|Block|
+|Network|Contract|Txn Hash|
 |---|---|---|---|
-|[Ropsten](https://ropsten.etherscan.io/address/0xA0A5B8867D21BD4d7fA8119c84D8CB36a84e45f2)|0xA0A5B8867D21BD4d7fA8119c84D8CB36a84e45f2|[0xdfe79ac00610feb29dc25aa516e91da1f1146244cdd5b2ad71cfcad24235cad3](https://ropsten.etherscan.io/tx/0xdfe79ac00610feb29dc25aa516e91da1f1146244cdd5b2ad71cfcad24235cad3)|[12042051](https://ropsten.etherscan.io/block/12042051)|
-
+|[Ropsten](https://ropsten.etherscan.io/address/0x8732FE7a3D5337836C85A2CDa5D371Ebc5308780)|0x8732FE7a3D5337836C85A2CDa5D371Ebc5308780|[0xce227e8679e93e5ed3929d4fb40a9e5c1bbfc969941906ff7c832f72af3950c7](https://ropsten.etherscan.io/tx/0xce227e8679e93e5ed3929d4fb40a9e5c1bbfc969941906ff7c832f72af3950c7)|
 
 ## Contracts UML
 
