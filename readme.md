@@ -52,19 +52,19 @@ In order to withdraw Ether from a funding as `Funder`, A funding state must be f
 |          |  **Function Name**  |  **Visibility**  |  **Mutability**  |  **Modifiers**  |
 | **CrowdFunding** | ***Implementation*** | FundraiserHandler, FunderHandler |||
 | L  | getBalance | Public ❗️  |   |NO❗️ |
+| L  | getFundings | external ❗️  | 🛑  |NO❗️ |
+| L  | getFunding | external ❗️  |  🛑 |NO❗️ |
 | **FundraiserHandler** | ******Implementation****** | FundingHandler |||
 |  L | setAvailableMinAmount | External ❗️ | 🛑  | ownerOfFunding |
 |  L | withdrawAsFundraiser | External ❗️ | 🛑  | fundingSucceeded |
 | **FundingHandler** | ***Implementation*** | FundingFactory, FundingCoinManager |||
- | L  | getMyFundingList | External ❗️  |   |NO❗️ |
- | L  | getFundings | External ❗️  |  |NO❗️ |
 | **FundingFactory** | ***Implementation*** |  |||
  | L  | createFunding | External ❗️ | 🛑  |NO❗️ |
 | **FundingCoinManager** | ***Implementation*** |  |||
- | L  | _transfer | Internal 🔒 | 🛑  | |
+ | L  | withdraw | Internal 🔒 | 🛑  | |
 | **FunderHandler** | ***Implementation*** | FundingHandler |||
 | L  | fund | External ❗️ |  💵 | availableFund |
-| L  | withdrawAsFunder | External ❗️ | 🛑  | funded fundingNotEndOrFailed |
+| L  | withdrawAsFunder | External ❗️ | 🛑  | funded fundingInProgressOrFailed |
 | L  | getMyFundingAccountPapers | External ❗️  |  |NO❗️ |
 | L  | _popAccountPaperAmount | Private 🔐 | 🛑  | |
 | L  | _removeMyAccountPaperIds | Private 🔐 | 🛑  | |
