@@ -37,7 +37,7 @@ In order to withdraw Ether from a funding as `Funder`, A funding state must be f
 
 ## Test Publish
 |Network|Contract|Txn Hash|
-|---|---|---|---|
+|---|---|---|
 |[Ropsten](https://ropsten.etherscan.io/address/0x8732FE7a3D5337836C85A2CDa5D371Ebc5308780)|0x8732FE7a3D5337836C85A2CDa5D371Ebc5308780|[0xce227e8679e93e5ed3929d4fb40a9e5c1bbfc969941906ff7c832f72af3950c7](https://ropsten.etherscan.io/tx/0xce227e8679e93e5ed3929d4fb40a9e5c1bbfc969941906ff7c832f72af3950c7)|
 
 ## Contracts UML
