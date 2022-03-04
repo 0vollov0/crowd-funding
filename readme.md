@@ -8,7 +8,31 @@ In order to withdraw Ether from a funding as `Fundraiser`, You need a successful
 
 In order to withdraw Ether from a funding as `Funder`, A funding state must be failed or progress.
 
-> getBalance method that is located in crowdFunding would show you balance of this contract.
+* The `getBalance` method that is located in crowdFunding would show you balance of this contract.
+* All of Coin unit is wei.
+
+## Requirement
+
+* `node >7.x.x && <17.x.x`
+* `truffle ^5.5.x (If you want to test on private network or deploy contract.)`
+
+## Usage
+
+1. Make `.secret` file on root directory and put the mnemonic that you set up when you created the Ethereum account in `.secret `file.
+    * If you don't have an Ethereum account, [create it here](https://metamask.io/).
+2. Change account value to yours in `/js/CrowdFunding.js`.
+3. Refer To the  API List below and modify the `/app.js` for What you want to do.
+
+|Method|Params|Description|
+|---|:---:|---|
+| getFunding | id | Return funding that is `id` that you put funding in contract. |
+| getFundings | | Return all of Fundings in contract. |
+| createFunding | title, subTitle, content, goalAmount, availableMinAmount, beginTime, endTime | |
+| fund | id, amount |  |
+| getMyFundingAccountPapers | id | This method would return receipts that you funded at `id`. |
+| withdrawAsFunder | id | This method possible  you to get a refund from funding that you funded. |
+| withdrawAsFundraiser | id | When funding finished successfully, You can withdraw from funding that you made. |
+| setAvailableMinAmount | id, amount | This method change funding 'available min amount'. |
 
 ## Test Publish
 |Network|Contract|Txn Hash|Block|
@@ -18,7 +42,7 @@ In order to withdraw Ether from a funding as `Funder`, A funding state must be f
 
 ## Contracts UML
 
-![UML](./uml/solidity_uml.png)
+![UML](./uml/@solidity_uml.png)
 
 ## Contracts Description Table
 
