@@ -43,13 +43,4 @@ contract FundingHandler is FundingFactory, FundingCoinManager {
         require(fundings[_fundingId].endTime <= block.timestamp);
         _;
     }
-
-    function getMyFundingList() external view returns(Funding [] memory) {
-        uint[] memory fundingIds = addressToFundingIds[msg.sender];
-        Funding[] memory myFundings = new Funding[](fundingIds.length);
-        for(uint i=0; i < fundingIds.length; i++) {
-            myFundings[i] = fundings[fundingIds[i]];
-        }
-        return myFundings;
-    }
 }
