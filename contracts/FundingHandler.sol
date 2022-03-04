@@ -52,8 +52,4 @@ contract FundingHandler is FundingFactory, FundingCoinManager {
         }
         return myFundings;
     }
-
-    function getFundings() external view returns(Funding [] memory) {
-        return fundings;
-    }
 }
