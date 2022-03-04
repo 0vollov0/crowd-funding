@@ -15,7 +15,7 @@ class Funding extends AbstractFunding{
 
   createFunding = async (title, subTitle, content, goalAmount, availableMinAmount, beginTime, endTime) => {
     const result = {};
-    return crowd_funding.methods.createFunding(
+    return this.contract.methods.createFunding(
       title,
       subTitle,
       content,
