@@ -32,7 +32,7 @@ class FundingCoinManager {
     ' -- vars --
 
     ' -- methods --
-	#_transfer()
+	#withdraw()
 
 }
 
@@ -45,8 +45,6 @@ class FundingHandler {
 
     ' -- methods --
 	+🔍getMyFundingList()
-	+🔍getFundings()
-
 }
 
 class FundraiserHandler {
@@ -96,6 +94,8 @@ class CrowdFunding {
 
     ' -- methods --
 	+🔍getBalance()
+	+🔍getFundings()
+	+🔍getFunding()
 
 }
 
