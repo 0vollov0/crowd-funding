@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.11;
-// import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "./../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./FundingFactory.sol";
 import "./FundingCoinManager.sol";
 
@@ -31,11 +29,11 @@ contract FundingHandler is FundingFactory, FundingCoinManager {
         _;
     }
 
-    modifier fundingNotEndOrFailed(uint _fundingId) {
+    modifier fundingInProgressOrFailed(uint _fundingId) {
         uint time = block.timestamp;
-        bool notEndFunding = (fundings[_fundingId].beginTime < time && time < fundings[_fundingId].endTime);
-        bool failedFunding =  (fundings[_fundingId].endTime < time) && (fundings[_fundingId].goalAmount < fundings[_fundingId].currentAmount);
-        require(notEndFunding || failedFunding,"The funding time has passed or has not been successful.");
+        bool inProgress = (fundings[_fundingId].beginTime < time && time < fundings[_fundingId].endTime);
+        bool failedFunding =  (fundings[_fundingId].endTime < time) && (fundings[_fundingId].currentAmount < fundings[_fundingId].goalAmount );
+        require(inProgress || failedFunding,"The funding state must be progress or failed.");
         _;
     }
 
@@ -53,9 +51,5 @@ contract FundingHandler is FundingFactory, FundingCoinManager {
             myFundings[i] = fundings[fundingIds[i]];
         }
         return myFundings;
-    }
-
-    function getFundings() external view returns(Funding [] memory) {
-        return fundings;
     }
 }
