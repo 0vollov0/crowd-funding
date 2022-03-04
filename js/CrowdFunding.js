@@ -21,6 +21,7 @@ class CrowdFunding extends User {
 
     super(contract, account);
 		this.event = new Event(contract_event);
+		this.event.on();
   }
 }
 
