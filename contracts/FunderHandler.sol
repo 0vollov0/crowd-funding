@@ -6,8 +6,8 @@ contract FunderHandler is FundingHandler {
     
     using SafeMath for uint256;
 
-    event Fund(address funder, uint fundingId, uint amount, uint date);
-    event WithdrawAsFunder(address funder, uint amount);
+    event Fund(address funder, uint fundingId, uint amount, uint time);
+    event WithdrawAsFunder(address funder, uint amount, uint time);
 
     modifier funded(uint _fundingId) {
         require(addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].length > 0);
@@ -31,14 +31,14 @@ contract FunderHandler is FundingHandler {
     mapping (address=>mapping(uint=>uint[])) public addressToFundingIdToAcoountPapersIds;
 
     function fund(uint _fundingId) external payable availableFund(_fundingId) { 
-        uint date = block.timestamp;
+        uint time = block.timestamp;
         uint fundAmount = msg.value;
         fundings[_fundingId].currentAmount = fundings[_fundingId].currentAmount.add(fundAmount);
-        AccountPaper memory accountPaper = AccountPaper(msg.sender, _fundingId, fundAmount, date);
+        AccountPaper memory accountPaper = AccountPaper(msg.sender, _fundingId, fundAmount, time);
         fundingToAccountPapers[_fundingId].push(accountPaper);
         addressToFundedFundingIds[msg.sender].push(_fundingId);
         addressToFundingIdToAcoountPapersIds[msg.sender][_fundingId].push(fundingToAccountPapers[_fundingId].length.sub(1));
-        emit Fund(msg.sender, _fundingId, fundAmount, date);
+        emit Fund(msg.sender, _fundingId, fundAmount, time);
     }
 
     function withdrawAsFunder(uint _fundingId) external funded(_fundingId) fundingInProgressOrFailed(_fundingId) {
@@ -51,7 +51,7 @@ contract FunderHandler is FundingHandler {
         fundings[_fundingId].currentAmount = fundings[_fundingId].currentAmount.sub(fundedAmount);
         bool success = withdraw(fundedAmount);
         require(success,"withdraw method doesn't work well.");
-        emit WithdrawAsFunder(msg.sender, fundedAmount);
+        emit WithdrawAsFunder(msg.sender, fundedAmount, block.timestamp);
     }
 
     function getMyFundingAccountPapers(uint _fundingId) external view returns(AccountPaper[] memory){
