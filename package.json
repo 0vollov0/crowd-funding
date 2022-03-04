@@ -4,13 +4,13 @@
     "email": "psk876@naver.com",
     "name": "SinGyu Park"
   },
+  "type": "module",
   "dependencies": {
     "@openzeppelin/contracts": "^4.5.0",
     "@truffle/hdwallet-provider": "^2.0.3",
     "web3": "^1.7.0"
   },
   "scripts": {
-    "start": "node index.js",
-    "test": "node test.js"
+    "start": "node app.js"
   }
 }
