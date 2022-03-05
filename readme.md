@@ -20,9 +20,8 @@ In order to withdraw Ether from a funding as `Funder`, A funding state must be f
 
 1. Make `.secret` file on root directory and put the mnemonic that you set up when you created the Ethereum account in `.secret `file.
     * If you don't have an Ethereum account, [create it here](https://metamask.io/).
-2. Change `RPC URL` in `/truffle-config.js` to yours. The location is ropsten provider under the network.
-3. Change account value to yours in `/js/CrowdFunding.js`.
-4. Refer To the  API List below and modify the `/app.js` for What you want to do.
+2. Change account value to yours in `/js/CrowdFunding.js`.
+3. Refer To the  API List below and modify the `/app.js` for What you want to do.
 
 |Method|Params|Description|
 |---|:---:|---|
