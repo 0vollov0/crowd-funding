@@ -4,5 +4,4 @@ pacakge-lock.json
 *.bat
 debug-inputs.json
 bin/
-build/
 .secret
